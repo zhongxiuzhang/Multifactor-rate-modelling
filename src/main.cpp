@@ -27,7 +27,7 @@ int main()
   /*MatrixXd m(num_trj,N+1);
   m = matrix_movement_brownien(T, N, num_trj);
   std::cout << m << std::endl;*/
-    int last_year=4;
+    int last_year=5;
     int tenor_num=4;
 
     vector<double> term_structure_=term_structure_hw1(last_year,tenor_num);
