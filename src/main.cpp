@@ -1,45 +1,79 @@
-
 #include <iostream>
-#include <Eigen/Dense>
 
 #include <vector>
 #include <cmath>
-#include <cstdlib>
+#include <stdlib.h>
+
 #include "HW1.h"
+#include <Eigen/Dense>
+
+#include <algorithm> // max_element, min_element
+#include <vector>
 
 using namespace std;
 using Eigen::MatrixXd;
 
 
-
-/*int main()
-{
-    cout << "Loi N "<<gaussian_box_muller() << endl;
-    cout << gaussian_box_muller() << endl;
-    return 0;
-}*/
-
-
-
 int main()
 {
-  int T=10, N=10, num_trj=3;
-  /*MatrixXd m(num_trj,N+1);
-  m = matrix_movement_brownien(T, N, num_trj);
-  std::cout << m << std::endl;*/
-    int last_year=4;
-    int tenor_num=4;
+	//int last_year = 30;
+	//int step = 2;
 
-    vector<double> term_structure_=term_structure_hw1(last_year,tenor_num);
-    MatrixXd m;
-    m = matrix_movement_brownien(term_structure_, num_trj);
-    cout << m << std::endl;
+	//vector<double> term_structure_ = term_structure_hw1(last_year, step);
 
-    cout<< term_structure_.size() << endl;
-    cout<< term_structure_[116] << endl;
-    vector<double> ini_fwd_rate = initial_forward_rate(term_structure_);
-    MatrixXd sr = short_rate_hw1(m, term_structure_, ini_fwd_rate, 2., 1.);
-    cout << sr << std::endl;
-    MatrixXd beta_= beta(sr, term_structure_);
-    cout << beta_ << std::endl;
+	//vector<double> initial_forward_rate_ = initial_forward_rate(term_structure_);
+
+
+	//double t = 3;
+	//double T = 7;
+
+	//vector<double> mov_brow = vector_movement_brownien(term_structure_);
+	////   cout<<mov_brow(2,3)<< endl;
+
+	//double vol = 0.01;
+	//double a = 0.01;
+
+
+	//double forward_rate_hw1_ = forward_rate_hw1(t, T, mov_brow, initial_forward_rate_, term_structure_, vol, a);
+	////    vector<double> xx(3);
+	//////
+	//double zero_coupon_bonds_hw1_ = zero_coupon_bonds_hw1(t, T, mov_brow, initial_forward_rate_, term_structure_, vol, a);
+	////    cout<<xx.size()<< endl;
+	//cout << forward_rate_hw1_ << endl;
+	////    cout<<forward_rate_hw1_[9]<< endl;
+	//cout << zero_coupon_bonds_hw1_ << endl;
+	//    cout<<zero_coupon_bonds_hw1_[10]<< endl;
+
+	//    MatrixXd short_rate_hw1_=short_rate_hw1(mov_brow, term_structure_, initial_forward_rate_, vol, a);
+	//
+	//    cout<<short_rate_hw1_(2,3)<< endl;
+
+	//
+	//    cout<< term_structure_[2] << endl;
+	//
+	//    double t=0.501;
+	//
+	//    for(int i=0;i<term_structure_.size();i++){
+	//      term_structure_[i]=abs(term_structure_[i]-t);
+	//    }
+	//    cout<< term_structure_[2] << endl;
+	//
+	//    vector<double>::iterator biggest = min_element(term_structure_.begin(), term_structure_.end());
+	//    cout << "Max element is " << *biggest<< " at position " << distance(term_structure_.begin(), biggest) << endl;
+
+	//cout<< gaussian_box_muller() << endl;
+
+	//    cout<< term_structure_[1] << endl;
+
+
+	//    cout<< term_structure_.size() << endl;
+	//    cout<< term_structure_[0] << endl;
+	//    cout<< term_structure_[4] << endl;
+	//    cout<< initial_forward_rate_[20] << endl;
+
+	//    cout << term_structure[1] << endl;
+	//    cout << term_structure[3] << endl;
+	//    cout << term_structure[9] << endl;
+
+	return 0;
 }
