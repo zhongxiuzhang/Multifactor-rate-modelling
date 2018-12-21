@@ -7,7 +7,14 @@
 using namespace std;
 using Eigen::MatrixXd;
 
-double gaussian_box_muller() {
+
+HW1::HW1(double a, double vol, vector<double> & ini_fwd_rate) {
+	a_ = a;
+	vol_ = vol; 
+	ini_fwd_rate_ = ini_fwd_rate;
+}
+
+double HW1::gaussian_box_muller() {
 	double x = 0.0;
 	double y = 0.0;
 	double euclid_sq = 0.0;
@@ -21,7 +28,7 @@ double gaussian_box_muller() {
 	return x * sqrt(-2 * log(euclid_sq) / euclid_sq);
 }
 
-vector<double> term_structure_hw1(const int& last_year, const int& step) {
+vector<double> HW1::term_structure_hw1(const int& last_year, const int& step) {
 	// To generate the term structure of Hull White model.
 	// Input: last year of interest rate, the tenor_num denote the number of points in one year.
 	// OUT: term structure of interest rate.
@@ -35,7 +42,7 @@ vector<double> term_structure_hw1(const int& last_year, const int& step) {
 	return term_structure;
 }
 
-vector<double>  vector_movement_brownien(const vector<double> & term_structure)
+vector<double>  HW1::vector_movement_brownien(const vector<double> & term_structure)
 //function to generate a matrix to save num_trj paths of brownian motion
 //IN: term structure, number of paths num_trj
 //OUT: a matrix of num_trj brownian motion
@@ -50,7 +57,7 @@ vector<double>  vector_movement_brownien(const vector<double> & term_structure)
 	return mov_brow;
 }
 
-vector<double> initial_forward_rate(const vector<double>& term_structure) {
+vector<double> HW1::initial_forward_rate(const vector<double>& term_structure) {
 	//This is the f(0,t) in the short rate simulation which come from the market data.
 	//Input: term structure
 	//Output: f(0,t)
@@ -62,7 +69,7 @@ vector<double> initial_forward_rate(const vector<double>& term_structure) {
 	return initial_forward_rate;
 }
 
-vector<double> short_rate_hw1(const vector<double> & mov_brow, const vector<double> & term_structure, const vector<double> & ini_fwd_rate, double vol, double a)
+vector<double> HW1::short_rate_hw1(const vector<double> & mov_brow, const vector<double> & term_structure)
 //function for generating the short rate
 //IN: brownian motion matrix, initial forward rate f(0,t), volatility sigma, mean reverting rate a
 //OUT: short rate r(T)
@@ -71,15 +78,15 @@ vector<double> short_rate_hw1(const vector<double> & mov_brow, const vector<doub
 	double tenor = double(term_structure[N - 1]) / double(N - 1);
 	double inte_sto = 0.;
 	vector<double> rate;
-	rate.push_back(ini_fwd_rate[0]);
+	rate.push_back(ini_fwd_rate_[0]);
 	for (int j = 1; j<N; j++) {
-		inte_sto = inte_sto + exp(a*tenor*j)*(mov_brow[j] - mov_brow[j - 1]);
-		rate.push_back(ini_fwd_rate[j] + pow(vol, 2) / 2 * pow(a, 2)*pow(1 - exp(-a * tenor*j), 2) + vol * exp(-a * tenor*j)*inte_sto);
+		inte_sto = inte_sto + exp(a_*tenor*j)*(mov_brow[j] - mov_brow[j - 1]);
+		rate.push_back(ini_fwd_rate_[j] + pow(vol_, 2) / 2 * pow(a_, 2)*pow(1 - exp(-a_ * tenor*j), 2) + vol_ * exp(-a_ * tenor*j)*inte_sto);
 	}
 	return rate;
 }
 
-vector<double> beta(const vector<double> & short_rate, const vector<double> & term_structure)
+vector<double> HW1::beta(const vector<double> & short_rate, const vector<double> & term_structure)
 //function for generating beta
 //IN: short rate matrix, term structure
 //OUT: beta matrix
@@ -98,7 +105,7 @@ vector<double> beta(const vector<double> & short_rate, const vector<double> & te
 
 
 //MatrixXd forward_rate_hw1(double t, double T, const MatrixXd & mov_brow, const vector<double> & ini_fwd_rate,const vector<double>& term_structure, double vol, double a)
-double forward_rate_hw1(double t, double T, const vector<double> & mov_brow, const vector<double> & ini_fwd_rate, const vector<double>& term_structure, double vol, double a)
+double HW1::forward_rate_hw1(double t, double T, const vector<double> & mov_brow, const vector<double>& term_structure)
 //function to generating the forward rate f(t,T)
 //IN: t, T, brownian motion matrix, initial forward rate f(0,t), volatility sigma, mean reverting rate a
 //OUT: forward rate f(t,T)
@@ -126,13 +133,13 @@ double forward_rate_hw1(double t, double T, const vector<double> & mov_brow, con
 	double forward_rate;
 
 	for (int j = 1; j <= index_t; j++) {
-		inte_sto = inte_sto + exp(a*tenor*j)*(mov_brow[j] - mov_brow[j - 1]);
+		inte_sto = inte_sto + exp(a_*tenor*j)*(mov_brow[j] - mov_brow[j - 1]);
 	}
-	forward_rate = ini_fwd_rate[index_T] + (vol*vol)*exp(-a * term_structure[index_t])*(exp(a*term_structure[index_t]) - 1) / (a*a) + vol * exp(-a * tenor*index_T)*inte_sto;
+	forward_rate = ini_fwd_rate_[index_T] + (vol_*vol_)*exp(-a_ * term_structure[index_t])*(exp(a_*term_structure[index_t]) - 1) / (a_*a_) + vol_ * exp(-a_ * tenor*index_T)*inte_sto;
 	return forward_rate;
 }
 
-double zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov_brow, const vector<double> & ini_fwd_rate, const vector<double>& term_structure, double vol, double a)
+double HW1::zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov_brow, const vector<double>& term_structure)
 //function for generating the zero coupon.
 //IN: t, T, brownian motion matrix, initial forward rate f(0,t), volatility sigma, mean reverting rate a
 //OUT: zero coupon
@@ -167,7 +174,7 @@ double zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov_brow
 	for (int i = index_t; i<index_T; i++)
 	{
 		s_fwd_rate = term_structure_T[i];
-		forward_rate_hw1_ = forward_rate_hw1(t_fwd_rate, s_fwd_rate, mov_brow, ini_fwd_rate, term_structure, vol, a);
+		forward_rate_hw1_ = forward_rate_hw1(t_fwd_rate, s_fwd_rate, mov_brow, term_structure);
 		zero_coupon_bonds_hw1 = zero_coupon_bonds_hw1 * exp(-forward_rate_hw1_ * tenor);
 	}
 	return zero_coupon_bonds_hw1;
