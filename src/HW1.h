@@ -17,7 +17,7 @@ public:
 	vector<double> ini_fwd_rate_;
 	double gaussian_box_muller();
 
-	HW1(double a, double vol, vector<double> & ini_fwd_rate);
+	HW1(double a, double vol);
 	
 
 	vector<double>  vector_movement_brownien(const vector<double> & term_structure);
@@ -35,6 +35,8 @@ public:
 	double forward_rate_hw1(double t, double T, const vector<double> & mov_brow, const vector<double>& term_structure);
 
 	double zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov_brow, const vector<double>& term_structure);
+
+	vector<double> copy_term_structure(vector<double> const &term_structure);
 
 };
 #endif // HW1_H_INCLUDED

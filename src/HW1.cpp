@@ -8,10 +8,9 @@ using namespace std;
 using Eigen::MatrixXd;
 
 
-HW1::HW1(double a, double vol, vector<double> & ini_fwd_rate) {
+HW1::HW1(double a, double vol) {
 	a_ = a;
 	vol_ = vol; 
-	ini_fwd_rate_ = ini_fwd_rate;
 }
 
 double HW1::gaussian_box_muller() {
@@ -62,11 +61,11 @@ vector<double> HW1::initial_forward_rate(const vector<double>& term_structure) {
 	//Input: term structure
 	//Output: f(0,t)
 	int num = term_structure.size();
-	vector<double> initial_forward_rate;
+	ini_fwd_rate_ = vector<double>();
 	for (int i = 0; i<num; i++) {
-		initial_forward_rate.push_back(0.005*i);
+		ini_fwd_rate_.push_back(0.005*i);
 	}
-	return initial_forward_rate;
+	return ini_fwd_rate_;
 }
 
 vector<double> HW1::short_rate_hw1(const vector<double> & mov_brow, const vector<double> & term_structure)
@@ -151,8 +150,8 @@ double HW1::zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov
 	double zero_coupon_bonds_hw1 = 1.;
 
 	// find t, T position
-	vector<double> term_structure_t = term_structure;
-	vector<double> term_structure_T = term_structure;
+	vector<double> term_structure_t = copy_term_structure(term_structure);
+	vector<double> term_structure_T = copy_term_structure(term_structure);
 
 	for (size_t i = 0; i<term_structure_t.size(); i++) {
 		term_structure_t[i] = abs(term_structure_t[i] - t);
@@ -166,17 +165,26 @@ double HW1::zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov
 	vector<double>::iterator Smallest_T = min_element(term_structure_T.begin(), term_structure_T.end());
 	int index_T = distance(term_structure_T.begin(), Smallest_T);
 
-	double t_fwd_rate = term_structure_T[index_t];
+	double t_fwd_rate = term_structure[index_t];
 	double s_fwd_rate;
 
 	double forward_rate_hw1_;
 
 	for (int i = index_t; i<index_T; i++)
 	{
-		s_fwd_rate = term_structure_T[i];
+		s_fwd_rate = term_structure[i];
 		forward_rate_hw1_ = forward_rate_hw1(t_fwd_rate, s_fwd_rate, mov_brow, term_structure);
 		zero_coupon_bonds_hw1 = zero_coupon_bonds_hw1 * exp(-forward_rate_hw1_ * tenor);
 	}
 	return zero_coupon_bonds_hw1;
+}
+
+
+vector<double> HW1::copy_term_structure(vector<double> const &term_structure) {
+	vector<double> copy_term_strcuture;
+	for (int i = 0; i < term_structure.size(); i++) {
+		copy_term_strcuture.push_back(term_structure[i]);
+	}
+	return copy_term_strcuture;
 }
 
