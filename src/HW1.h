@@ -12,13 +12,13 @@ public:
 	// For random Gaussian generation
 	// Note that there are many ways of doing this, but we will
 	// be using the Box-Muller method for demonstration purposes
-	double vol_; 
+	double vol_;
 	double a_;
 	vector<double> ini_fwd_rate_;
 	double gaussian_box_muller();
 
 	HW1(double a, double vol);
-	
+
 
 	vector<double>  vector_movement_brownien(const vector<double> & term_structure);
 
@@ -28,6 +28,8 @@ public:
 	//This is the f(0,t) in the short rate simulation which come from the market data.
 	vector<double> initial_forward_rate(const vector<double>& term_structure);
 
+	vector<double> initial_zero_coupon(const vector<double>& ini_fwd_rate_,const vector<double>& term_structure);
+
 	vector<double> short_rate_hw1(const vector<double> & mov_brow, const vector<double> & term_structure);
 
 	vector<double> beta(const vector<double> & short_rate, const vector<double> & term_structure);
@@ -36,7 +38,9 @@ public:
 
 	double zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov_brow, const vector<double>& term_structure);
 
-	vector<double> copy_term_structure(vector<double> const &term_structure);
 
 };
+
+vector<double> copy_term_structure(vector<double> const &term_structure);
+
 #endif // HW1_H_INCLUDED

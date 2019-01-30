@@ -27,6 +27,12 @@ int main()
 
 
 	vector<double> initial_forward_rate_ = hjm->initial_forward_rate(term_structure_);
+	cout << initial_forward_rate_[2] << endl;
+	vector<double> initial_zero_coupon_ = hjm->initial_zero_coupon(initial_forward_rate_, term_structure_);
+	for(int j = 0;j<60;j++){
+		cout<<"index:"<<j<<"  zc:"<<initial_zero_coupon_[j]<<endl;
+	}
+
 
 	//vector<double> mvt_brownian = hjm->vector_movement_brownien(term_structure_);
 
@@ -38,11 +44,11 @@ int main()
 
 	CallZC *call_zc = new CallZC(hjm, last_year, 5, 20);
 
-	MonteCarlo *mc = new MonteCarlo(hjm, call_zc, 5000, last_year, step);
+	//MonteCarlo *mc = new MonteCarlo(hjm, call_zc, 5000, last_year, step);
 
-	double price = mc->price();
+	//double price = mc->price();
+    double price_theory=call_zc->price_theory_CallZC(term_structure_,initial_zero_coupon_,10.,5.,10);
+	cout << "this is the price " << price_theory << endl;
 
-	cout << "this is the price" << price << endl;
-		
 	return 0;
 }
