@@ -19,7 +19,7 @@ public:
 	int step_;
 	double maturity_;
 
-	double price();
+	double price(double t);
 
 	virtual ~MonteCarlo();
 
