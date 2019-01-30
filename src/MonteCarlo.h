@@ -1,8 +1,10 @@
 #ifndef MONTECARLO_H
 #define	MONTECARLO_H
 
+#include <iostream>
 #include "Option.h"
 #include "HW1.h"
+using namespace std;
 
 /**
 * @brief MonteCarlo class

@@ -1,7 +1,8 @@
 #include "CallZC.h"
 #include <math.h>
 
-CallZC::CallZC(double zc_maturity, int maturity, double strike) {
+CallZC::CallZC(HW1 *hjm, double zc_maturity, int maturity, double strike) {
+	mod_ = hjm;
 	zc_maturity_ = zc_maturity;
 	T_ = maturity; 
 	strike_ = strike;

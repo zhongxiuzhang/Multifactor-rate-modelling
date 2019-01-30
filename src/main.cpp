@@ -36,9 +36,9 @@ int main()
 
 	//double zc = hjm->zero_coupon_bonds_hw1(1, last_year, mvt_brownian, term_structure_);
 
-	CallZC *call_zc = new CallZC(last_year, 5, 20);
+	CallZC *call_zc = new CallZC(hjm, last_year, 5, 20);
 
-	MonteCarlo *mc = new MonteCarlo(hjm, call_zc, 100, last_year, step);
+	MonteCarlo *mc = new MonteCarlo(hjm, call_zc, 5000, last_year, step);
 
 	double price = mc->price();
 

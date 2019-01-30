@@ -1,4 +1,5 @@
 #include "Option.h"
+#include "HW1.h"
 #include <vector>
 using namespace std;
 
@@ -11,7 +12,7 @@ public:
 
 	double payOff(const vector<double> &term_structure, const vector<double> &brownian_motion, const vector<double> &short_rate_path);
 	
-	CallZC(double zc_maturity, int Maturity, double strike);
+	CallZC(HW1 *hjm, double zc_maturity, int Maturity, double strike);
 	
 	virtual ~CallZC();
 };

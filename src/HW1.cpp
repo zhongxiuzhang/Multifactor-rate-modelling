@@ -114,8 +114,8 @@ double HW1::forward_rate_hw1(double t, double T, const vector<double> & mov_brow
 	double inte_sto = 0.;
 
 	// find t, T position
-	vector<double> term_structure_t = term_structure;
-	vector<double> term_structure_T = term_structure;
+	vector<double> term_structure_t = copy_term_structure(term_structure);
+	vector<double> term_structure_T = copy_term_structure(term_structure);
 
 	for (size_t i = 0; i<term_structure_t.size(); i++) {
 		term_structure_t[i] = abs(term_structure_t[i] - t);
