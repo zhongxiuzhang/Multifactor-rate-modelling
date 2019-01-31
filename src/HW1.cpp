@@ -1,6 +1,6 @@
 #include "HW1.h"
 #include <Eigen/Dense>
-
+#include <random>
 #include <algorithm> // max_element, min_element
 #include <vector>
 
@@ -14,7 +14,7 @@ HW1::HW1(double a, double vol) {
 }
 
 double HW1::gaussian_box_muller() {
-	double x = 0.0;
+	/*double x = 0.0;
 	double y = 0.0;
 	double euclid_sq = 0.0;
 
@@ -24,7 +24,12 @@ double HW1::gaussian_box_muller() {
 		euclid_sq = x * x + y * y;
 	} while (euclid_sq >= 1.0);
 
-	return x * sqrt(-2 * log(euclid_sq) / euclid_sq);
+	return x * sqrt(-2 * log(euclid_sq) / euclid_sq);*/
+
+	random_device rd;
+	mt19937 gen(rd()); // Create and seed the generator
+	normal_distribution<> d(0., 1.); // Create distribution
+	return d(gen);
 }
 
 vector<double> HW1::term_structure_hw1(const int& last_year, const int& step) {
@@ -61,7 +66,6 @@ vector<double> HW1::initial_forward_rate(const vector<double>& term_structure) {
 	//Input: term structure
 	//Output: f(0,t)
 	int num = term_structure.size();
-	vector<double> ini_fwd_rate_;
 	for (int i = 0; i<num; i++) {
 		ini_fwd_rate_.push_back(0.005*i);
 	}
@@ -93,7 +97,7 @@ vector<double> HW1::short_rate_hw1(const vector<double> & mov_brow, const vector
 	rate.push_back(ini_fwd_rate_[0]);
 	for (int j = 1; j<N; j++) {
 		inte_sto = inte_sto + exp(a_*tenor*j)*(mov_brow[j] - mov_brow[j - 1]);
-		rate.push_back(ini_fwd_rate_[j] + pow(vol_, 2) / 2 * pow(a_, 2)*pow(1 - exp(-a_ * tenor*j), 2) + vol_ * exp(-a_ * tenor*j)*inte_sto);
+		rate.push_back(ini_fwd_rate_[j] + pow(vol_, 2) / (2 * pow(a_, 2))*pow(1 - exp(-a_ * tenor*j), 2) + vol_ * exp(-a_ * tenor*j)*inte_sto);
 	}
 	return rate;
 }
@@ -147,7 +151,8 @@ double HW1::forward_rate_hw1(double t, double T, const vector<double> & mov_brow
 	for (int j = 1; j <= index_t; j++) {
 		inte_sto = inte_sto + exp(a_*tenor*j)*(mov_brow[j] - mov_brow[j - 1]);
 	}
-	forward_rate = ini_fwd_rate_[index_T] + (vol_*vol_)*exp(-a_ * term_structure[index_t])*(exp(a_*term_structure[index_t]) - 1) / (a_*a_) + vol_ * exp(-a_ * tenor*index_T)*inte_sto;
+	forward_rate = ini_fwd_rate_[index_T] + (vol_*vol_)*exp(-a_ * term_structure[index_T])*(exp(a_*term_structure[index_t]) - 1) / (a_*a_)  
+		- (vol_*vol_)*exp(-2*a_ * term_structure[index_T])*(exp(2*a_*term_structure[index_t]) - 1) / (2*a_*a_) + vol_ * exp(-a_ *term_structure[index_T])*inte_sto;
 	return forward_rate;
 }
 

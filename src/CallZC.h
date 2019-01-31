@@ -14,7 +14,7 @@ public:
 
 	CallZC(HW1 *hjm, double zc_maturity, int Maturity, double strike);
 
-	double price_theory_CallZC(const vector<double> &term_structure, const vector<double> & initial_zero_coupon_, double zc_maturity, double Maturity, double strike);
+	double price_theory_CallZC(const vector<double> &term_structure, const vector<double> & initial_zero_coupon_);
 
 	virtual ~CallZC();
 };
