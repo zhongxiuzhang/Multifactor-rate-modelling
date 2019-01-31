@@ -10,7 +10,7 @@ using Eigen::MatrixXd;
 
 HW1::HW1(double a, double vol) {
 	a_ = a;
-	vol_ = vol; 
+	vol_ = vol;
 }
 
 double HW1::gaussian_box_muller() {
@@ -61,11 +61,24 @@ vector<double> HW1::initial_forward_rate(const vector<double>& term_structure) {
 	//Input: term structure
 	//Output: f(0,t)
 	int num = term_structure.size();
-	ini_fwd_rate_ = vector<double>();
+	vector<double> ini_fwd_rate_;
 	for (int i = 0; i<num; i++) {
 		ini_fwd_rate_.push_back(0.005*i);
 	}
 	return ini_fwd_rate_;
+}
+
+vector<double> HW1::initial_zero_coupon(const vector<double>& ini_fwd_rate_,const vector<double>& term_structure) {
+
+    int N = term_structure.size();
+	double tenor = double(term_structure[N - 1]) / double(N - 1);
+	int num = ini_fwd_rate_.size();
+	vector<double> initial_zero_coupon_;
+	initial_zero_coupon_.push_back(1);
+	for (int i = 1; i<num; i++) {
+		initial_zero_coupon_.push_back(initial_zero_coupon_[i-1]*exp(-ini_fwd_rate_[i]*tenor));
+	}
+	return initial_zero_coupon_;
 }
 
 vector<double> HW1::short_rate_hw1(const vector<double> & mov_brow, const vector<double> & term_structure)
@@ -180,11 +193,12 @@ double HW1::zero_coupon_bonds_hw1(double t, double T, const vector<double> & mov
 }
 
 
-vector<double> HW1::copy_term_structure(vector<double> const &term_structure) {
+
+
+vector<double> copy_term_structure(vector<double> const &term_structure) {
 	vector<double> copy_term_strcuture;
 	for (int i = 0; i < term_structure.size(); i++) {
 		copy_term_strcuture.push_back(term_structure[i]);
 	}
 	return copy_term_strcuture;
 }
-
