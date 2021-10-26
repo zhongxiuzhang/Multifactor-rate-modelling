@@ -5,6 +5,6 @@
 using namespace std;
 
 double cdfGaussian (double quantile){
-	
+
 	return erfc(-quantile / sqrt(2)) / 2.;
 }
